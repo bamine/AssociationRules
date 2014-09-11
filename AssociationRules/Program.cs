@@ -10,6 +10,47 @@ namespace AssociationRules
     {
         static void Main(string[] args)
         {
+            string file = @"c:\test.csv";
+            string sup = "2";
+            if (args.Length > 0)
+            {
+                file = args[0];
+
+            }
+            if (args.Length == 2)
+            {
+                sup = args[1];
+
+            }
+
+
+            double support = double.Parse(sup);
+
+            CSVReader cr = new CSVReader();
+            ItemSet data = cr.Read(file);
+
+
+
+            Program p = new Program();
+            ItemSet a = Apriori.GenerateRules(data, support);
+            for (int i = 0; i < a.Count; i++)
+            {
+                ItemSet cur = (ItemSet)a[i];
+                for (int j = 0; j < cur.Count; j++)
+                {
+                    ItemSet now = (ItemSet)cur[j];
+                    foreach (DataItem item in now)
+                    {
+
+                        Console.Write("编号" + item.Id + ":" + item.ItemName + "  ");
+
+
+                    }
+                    Console.WriteLine("  支持度:" + now.ICount);
+                }
+
+            }
+            Console.Read();
         }
     }
 }
